@@ -18,14 +18,16 @@
         </li>
       </ul>
 
-      <span>
-        <?php
-        if ($is_logged_in) {
-          echo 'Belépve: ';
+      <?php
+      if ($is_logged_in) { ?>
+        <span>
+          <?php
           echo $_SESSION['name'];
-        }
-        ?>
-      </span>
+          ?>
+        </span>
+        <a href="logout.php" class="btn btn-warning">Logout</a>
+      <?php }
+      ?>
     </div>
   </div>
 </nav>

@@ -2,6 +2,17 @@
 
 require_once ('config.php');
 
+$users = [];
+
+if ($is_logged_in) {
+    $conn = get_connection();
+
+    $sql = "SELECT * from users";
+
+    $res = $conn->query($sql);
+
+    $users = $res->fetchAll(PDO::FETCH_ASSOC);
+}
 
 ?>
 
@@ -18,7 +29,39 @@ require_once ('config.php');
 
 <body>
     <?php include 'common/nav.php'; ?>
-    <h1>Hello</h1>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1>User table:</h1>
+
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        foreach ($users as $key => $user) {
+                            echo '<tr>';
+                            echo '<td>' . $user['id'] . '</td>';
+                            echo '<td>' . $user['name'] . '</td>';
+                            echo '<td>' . $user['email'] . '</td>';
+                            echo '<td><button class="btn btn-info">Edit</button></td>';
+                            echo '</tr>';
+                        }
+                        ?>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
