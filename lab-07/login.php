@@ -1,34 +1,43 @@
-<?php 
-    require_once('config.php');
+<?php
 
-    if(isset($_POST['email']) && isset($_POST['password'])){
-        $conn = new PDO(
-            'mysql:host=localhost;dbname='.DB_NAME.';charset=utf8',
-            DB_NAME,
-            DB_PASS
-        );
+require_once ('config.php');
 
-        $sql = "SELECT * FROM users WHERE email = '{$_POST['email']}' AND password = SHA1('{$_POST['password']}')";
+if (isset($_POST['email']) && isset($_POST['password'])) {
+    $conn = new PDO(
+        'mysql:host=localhost;dbname=' . DB_NAME . ';charset=utf8',
+        DB_NAME,
+        DB_PASS
+    );
 
-        $res = $conn->query($sql);
-        $records = $res->fetchAll(PDO::FETCH_ASSOC);
-        var_dump($records);
+    $sql = "SELECT * FROM users WHERE email = '{$_POST['email']}' AND password = SHA1('{$_POST['password']}')";
+
+    $res = $conn->query($sql);
+    $records = $res->fetchAll(PDO::FETCH_ASSOC);
+
+    if (count($records) === 1) {
+        $_SESSION['isLoggedIn'] = true;
+        $_SESSION['name'] = $records[0]['name'];
+        $_SESSION['email'] = $records[0]['email'];
     }
+}
 
 ?>
 
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <title>Document</title>
 </head>
+
 <body>
     <?php include 'common/nav.php'; ?>
-    
+
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -48,6 +57,9 @@
         </div>
     </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
 </body>
+
 </html>
